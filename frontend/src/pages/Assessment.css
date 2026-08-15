@@ -1,0 +1,161 @@
+.assessment {
+  min-height: 100vh;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f5f3ff, #ffffff);
+}
+
+.assessment-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.assessment-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.assessment-header span {
+  color: #6c63ff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.assessment-header h1 {
+  margin: 15px 0;
+  font-size: 46px;
+  color: #111827;
+}
+
+.assessment-header p {
+  max-width: 650px;
+  margin: auto;
+  color: #6b7280;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.progress {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #6c63ff;
+  transition: width 0.3s ease;
+}
+
+.question-number {
+  text-align: right;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.question-card {
+  margin-top: 20px;
+  padding: 40px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(17, 24, 39, 0.08);
+}
+
+.question-card h2 {
+  margin-bottom: 30px;
+  color: #111827;
+  font-size: 26px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.option {
+  padding: 17px 20px;
+  text-align: left;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  color: #374151;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.option:hover {
+  border-color: #6c63ff;
+  background: #f5f3ff;
+}
+
+.option.selected {
+  border-color: #6c63ff;
+  background: #eeecff;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
+.assessment-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+}
+
+.previous-btn,
+.next-btn {
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.previous-btn {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+}
+
+.previous-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.next-btn {
+  border: none;
+  background: #6c63ff;
+  color: white;
+}
+
+.next-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .assessment {
+    padding: 50px 20px;
+  }
+
+  .assessment-header h1 {
+    font-size: 34px;
+  }
+
+  .question-card {
+    padding: 25px;
+  }
+
+  .question-card h2 {
+    font-size: 22px;
+  }
+
+  .assessment-buttons {
+    gap: 15px;
+  }
+}

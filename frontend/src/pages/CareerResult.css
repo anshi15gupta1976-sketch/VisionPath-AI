@@ -1,0 +1,151 @@
+.career-result {
+  min-height: 100vh;
+  padding: 90px 20px;
+  background: linear-gradient(135deg, #f5f3ff, #ffffff);
+}
+
+.result-container {
+  max-width: 850px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.result-tagline {
+  margin-bottom: 12px;
+  color: #6c63ff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.result-container h1 {
+  margin: 0 0 40px;
+  color: #111827;
+  font-size: 48px;
+}
+
+.career-card {
+  padding: 45px;
+  text-align: left;
+
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+
+  box-shadow: 0 15px 40px rgba(17, 24, 39, 0.08);
+}
+
+.career-card h2 {
+  margin: 0 0 15px;
+  color: #6c63ff;
+  font-size: 32px;
+}
+
+.career-card > p {
+  color: #6b7280;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.career-card h3 {
+  margin-top: 30px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.career-card ul {
+  padding-left: 20px;
+  color: #4b5563;
+  line-height: 2;
+}
+
+.career-card button {
+  margin-top: 20px;
+  padding: 14px 25px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #6c63ff;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.career-card button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .career-result {
+    padding: 60px 20px;
+  }
+
+  .result-container h1 {
+    font-size: 34px;
+  }
+
+  .career-card {
+    padding: 28px;
+  }
+
+  .career-card h2 {
+    font-size: 26px;
+  }
+}
+
+.result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.roadmap-btn,
+.resources-btn {
+  padding: 13px 22px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.roadmap-btn {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.resources-btn {
+  background-color: #eeecff;
+  color: #6c63ff;
+}
+
+.roadmap-btn:hover,
+.resources-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .roadmap-btn,
+  .resources-btn {
+    width: 100%;
+  }
+}
