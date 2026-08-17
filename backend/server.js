@@ -45,24 +45,24 @@ app.post('/api/career-assistant', async (req, res) => {
       })
     }
 
-    console.log('Sending request to Ollama...')
+    console.log('Sending request to Groq...')
 
     const response = await fetch(
-      'http://127.0.0.1:11434/api/generate',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
-
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
         },
-
         body: JSON.stringify({
-          model: 'qwen3:4b',
+          model: 'llama-3.1-8b-instant',
+          messages: [
+            {
+              role: 'system',
+              content: `You are VisionPath AI, a professional and friendly career guidance assistant.
 
-          prompt: `
-You are VisionPath AI, a professional and friendly career guidance assistant.
-
-Help students with:
+Help students and beginners with:
 - Career choices
 - Software Engineering
 - Artificial Intelligence
@@ -78,80 +78,58 @@ Help students with:
 - Learning roadmaps
 
 Rules:
-- Give practical beginner-friendly answers.
-- Use clear headings.
-- Use bullet points.
-- Use numbered steps when useful.
-- For roadmaps, divide the answer into months or stages.
-- Mention practical projects when relevant.
-- Avoid unnecessary long paragraphs.
-- Be encouraging and realistic.
-
-User Question:
-${question}
-          `,
-
-          stream: true
+1. Give practical and beginner-friendly advice.
+2. For roadmaps, divide the answer into clear stages or months.
+3. Use headings and bullet points.
+4. Give examples when useful.
+5. Keep answers organized and easy to read.
+6. Mention practical projects whenever relevant.
+7. Explain a technology first, then explain how to learn it.
+8. Be encouraging but realistic.
+9. Do not claim personal information about the user unless provided.
+10. Do not mention Groq, Ollama, or the underlying AI model.`
+            },
+            {
+              role: 'user',
+              content: question
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 1000
         })
       }
     )
 
-    console.log('Ollama status:', response.status)
+    console.log('Groq status:', response.status)
 
     if (!response.ok) {
-      throw new Error(`Ollama returned status ${response.status}`)
+      const errorText = await response.text()
+      console.error('Groq error:', errorText)
+
+      throw new Error(`Groq returned status ${response.status}`)
     }
 
-    let answer = ''
+    const data = await response.json()
 
-    const reader = response.body.getReader()
-    const decoder = new TextDecoder()
+    const answer = data.choices?.[0]?.message?.content
 
-    while (true) {
-      const { value, done } = await reader.read()
-
-      if (done) break
-
-      const chunk = decoder.decode(value, {
-        stream: true
-      })
-
-      const lines = chunk.split('\n')
-
-      for (const line of lines) {
-        if (!line.trim()) continue
-
-        try {
-          const json = JSON.parse(line)
-
-          if (json.response) {
-            answer += json.response
-          }
-
-          if (json.done) {
-            console.log('Ollama response completed')
-          }
-
-        } catch (error) {
-          // Ignore incomplete JSON chunks
-        }
-      }
+    if (!answer) {
+      throw new Error('No answer received from Groq')
     }
 
-    console.log('Final answer received')
+    console.log('Groq response received')
 
     res.json({
       success: true,
-      answer: answer.trim()
+      answer: answer
     })
 
   } catch (error) {
-
-    console.error('OLLAMA ERROR:', error)
+    console.error('AI ERROR:', error)
 
     res.status(500).json({
       success: false,
-      message: 'Local AI service failed.',
+      message: 'AI service failed.',
       error: error.message
     })
   }
