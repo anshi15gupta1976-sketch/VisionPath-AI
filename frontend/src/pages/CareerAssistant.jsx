@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
+import { askCareerAssistant } from '../api'
 import './CareerAssistant.css'
 
 function CareerAssistant() {
@@ -13,6 +14,7 @@ function CareerAssistant() {
 
     const userQuestion = question.trim()
 
+    // Add user message
     setMessages((prev) => [
       ...prev,
       {
@@ -27,30 +29,13 @@ function CareerAssistant() {
     try {
       console.log('1. Sending request:', userQuestion)
 
-      const response = await fetch(
-        'http://localhost:5000/api/career-assistant',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            question: userQuestion
-          })
-        }
-      )
+      // IMPORTANT:
+      // Uses the live backend URL from api.js
+      const data = await askCareerAssistant(userQuestion)
 
-      console.log('2. Response status:', response.status)
+      console.log('2. Backend response:', data)
 
-      const data = await response.json()
-
-      console.log('3. Backend response:', data)
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Server error')
-      }
-
-      // Add empty AI message first
+      // Add empty AI message
       setMessages((prev) => [
         ...prev,
         {
@@ -59,9 +44,10 @@ function CareerAssistant() {
         }
       ])
 
-      // Typing effect
-      const answer = data.answer || 'Sorry, I could not generate an answer.'
+      const answer =
+        data.answer || 'Sorry, I could not generate an answer.'
 
+      // Typing effect
       let currentText = ''
 
       for (let i = 0; i < answer.length; i++) {
@@ -83,7 +69,7 @@ function CareerAssistant() {
         })
       }
 
-      console.log('4. Answer displayed')
+      console.log('3. Answer displayed')
 
     } catch (error) {
       console.error('Career Assistant Error:', error)
@@ -92,25 +78,29 @@ function CareerAssistant() {
         ...prev,
         {
           type: 'ai',
-          text: 'Sorry, I could not connect to the AI server. Please try again.'
+          text:
+            'Sorry, I could not connect to the AI server. Please try again.'
         }
       ])
     } finally {
       setLoading(false)
-      console.log('5. Loading finished')
+      console.log('4. Loading finished')
     }
   }
 
+  // Suggested question
   const askSuggestedQuestion = (text) => {
     setQuestion(text)
   }
 
+  // Clear chat
   const clearChat = () => {
     setMessages([])
     setQuestion('')
     setCopiedIndex(null)
   }
 
+  // Copy AI answer
   const copyAnswer = async (text, index) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -152,9 +142,11 @@ function CareerAssistant() {
 
       <div className="chat-container">
 
-        {/* Messages */}
+        {/* Chat Messages */}
 
         <div className="chat-messages">
+
+          {/* Welcome */}
 
           {messages.length === 0 && (
             <div className="welcome-message">
@@ -175,6 +167,8 @@ function CareerAssistant() {
           )}
 
 
+          {/* Messages */}
+
           {messages.map((message, index) => (
 
             <div
@@ -193,6 +187,8 @@ function CareerAssistant() {
                   <ReactMarkdown>
                     {message.text}
                   </ReactMarkdown>
+
+                  {/* Copy button */}
 
                   {message.text && (
                     <button
@@ -220,11 +216,16 @@ function CareerAssistant() {
           ))}
 
 
+          {/* Thinking */}
+
           {loading && (
             <div className="message ai-message thinking">
 
               <span>Thinking</span>
-              <span className="dots">...</span>
+
+              <span className="dots">
+                ...
+              </span>
 
             </div>
           )}
